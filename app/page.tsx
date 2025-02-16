@@ -1,13 +1,16 @@
-import { neon } from "@neondatabase/serverless";
+// import { neon } from "@neondatabase/serverless";
 
-async function getData() {
-  const sql = neon(process.env.DATABASE_URL || "");
-  const response = await sql`SELECT version()`;
-  return response[0].version;
-}
+// async function getData() {
+//   const sql = neon(process.env.DATABASE_URL || "");
+//   const response = await sql`SELECT version()`;
+//   return response[0].version;
+// }
 
-export default async function Page() {
-  const data = await getData();
-  console.log(data);
-  return <h1>teker dashboard</h1>;
+import { auth } from "@clerk/nextjs/server";
+
+export default async function Home() {
+  const { userId, redirectToSignIn } = await auth();
+  if (!userId) return redirectToSignIn();
+
+  // return <h1>Hello, {userId}</h1>;
 }
